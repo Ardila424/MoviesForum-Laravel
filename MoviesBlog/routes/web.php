@@ -4,24 +4,25 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SectionController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\BlogController;
+use App\Http\Controllers\PublicBlogController;
+use App\Http\Controllers\TmdbController;
 use Illuminate\Support\Facades\Route;
 use App\Models\Role;
 use App\Models\Permission;
 use App\Models\User;
 
-// Página principal pública
-Route::get('/', function () {
-    return view('welcome');
-})->name('home');
+// Página principal pública: últimos blogs publicados
+Route::get('/', [PublicBlogController::class, 'index'])->name('home');
 
-// -------- RUTA DE TEST PARA VER ROLES / PERMISOS / USUARIOS --------
-Route::get('/test', function () {
-    $roles = Role::with('permissions')->get();
-    $permissions = Permission::all();
-    $users = User::with('role')->get();
-    return view('test', compact('roles', 'permissions', 'users'));
-})->name('test');
-// -------------------------------------------------------------------
+// Listar por sección
+Route::get('/seccion/{slug}', [PublicBlogController::class, 'bySection'])
+    ->name('section.public');
+
+// Detalle público del blog
+Route::get('/blog/{slug}', [PublicBlogController::class, 'show'])
+    ->name('blog.show');
+
+
 
 // Dashboard para usuarios autenticados
 Route::get('/dashboard', function () {
@@ -43,12 +44,20 @@ Route::middleware(['auth', 'role:admin'])
         // Panel principal admin
         Route::get('/', [AdminController::class, 'index'])->name('index');
 
-        // CRUD de secciones (Noticias, Reseñas, Estrenos...)
+        // Gestión de Usuarios y Roles
+        Route::resource('users', \App\Http\Controllers\Admin\UserController::class);
+        Route::resource('roles', \App\Http\Controllers\Admin\RoleController::class);
+
+        // CRUD de secciones
         Route::resource('sections', SectionController::class)->except(['show']);
 
-        // 👉 CRUD de blogs / reseñas
+        // CRUD de blogs
         Route::resource('blogs', BlogController::class)->except(['show']);
+
+        // Búsqueda de películas en TMDB (AJAX)
+        Route::get('/tmdb/search', [TmdbController::class, 'search'])
+            ->name('tmdb.search');
     });
 // =======================================================================
 
-require __DIR__ . '/auth.php';
+require __DIR__.'/auth.php';

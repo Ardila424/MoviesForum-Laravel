@@ -19,11 +19,21 @@ class Blog extends Model
         'rating',
         'is_published',
         'published_at',
+        // Campos TMDB
+        'tmdb_id',
+        'tmdb_title',
+        'tmdb_original_title',
+        'tmdb_poster_path',
+        'tmdb_backdrop_path',
+        'tmdb_vote_average',
+        'tmdb_release_date',
     ];
 
     protected $casts = [
-        'is_published' => 'boolean',
-        'published_at' => 'datetime',
+        'is_published'       => 'boolean',
+        'published_at'       => 'datetime',
+        'tmdb_vote_average'  => 'decimal:1',
+        'tmdb_release_date'  => 'date',
     ];
 
     public function author()
