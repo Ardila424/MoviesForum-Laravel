@@ -4,8 +4,6 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
-use App\Models\Role; // 👈 IMPORTANTE
-use App\Providers\RouteServiceProvider;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -25,30 +23,39 @@ class RegisteredUserController extends Controller
     }
 
     /**
-     * Maneja el POST del registro de usuarios.
+     * Maneja el registro de un nuevo usuario.
      */
     public function store(Request $request): RedirectResponse
     {
         $request->validate([
-            'name'     => ['required', 'string', 'max:255'],
-            'email'    => ['required', 'string', 'email', 'max:255', 'unique:'.User::class],
+            'name' => ['required', 'string', 'max:255'],
+            'email' => [
+                'required',
+                'string',
+                'lowercase',
+                'email',
+                'max:255',
+                'unique:' . User::class,
+            ],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
-
-        // Buscar el rol por defecto (ej: 'user')
-        $defaultRole = Role::where('slug', 'user')->first();
 
         $user = User::create([
             'name'     => $request->name,
             'email'    => $request->email,
             'password' => Hash::make($request->password),
-            'role_id'  => $defaultRole?->id, // si no existe, queda null
+            // No ponemos role_id aquí para que quede en NULL por defecto
+            // y solo el usuario creado por el seeder sea admin.
         ]);
 
         event(new Registered($user));
 
         Auth::login($user);
 
-        return redirect(RouteServiceProvider::HOME);
+        // 👇 Aquí estaba antes RouteServiceProvider::HOME
+        // Redirigimos al dashboard usando el nombre de la ruta
+        return redirect()->route('dashboard');
+        // o si prefieres:
+        // return redirect()->intended(route('dashboard'));
     }
 }

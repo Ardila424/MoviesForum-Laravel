@@ -13,14 +13,18 @@ class Section extends Model
         'name',
         'slug',
         'description',
+        'is_active',
     ];
 
-    /**
-     * Relación con blogs (cuando creemos el modelo Blog).
-     * Una sección tiene muchos blogs/artículos.
-     */
     public function blogs()
     {
         return $this->hasMany(Blog::class);
+    }
+
+    public function roles()
+    {
+        return $this->belongsToMany(Role::class, 'role_sections')
+                    ->withPivot(['can_view', 'can_manage'])
+                    ->withTimestamps();
     }
 }

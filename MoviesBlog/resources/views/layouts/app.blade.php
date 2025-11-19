@@ -39,7 +39,9 @@
         @endif
 
         @yield('content')
+
+        @if (isset($slot))
+            {{ $slot }}
+        @endif
     </main>
 </body>
-
-</html>

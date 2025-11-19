@@ -18,11 +18,11 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'role_id',      // importante para enlazar con roles
+        'role_id',
     ];
 
     /**
-     * Atributos que deben estar ocultos en arrays / JSON.
+     * Atributos ocultos.
      */
     protected $hidden = [
         'password',
@@ -30,13 +30,15 @@ class User extends Authenticatable
     ];
 
     /**
-     * Atributos que deben ser casteados a otros tipos.
+     * Casts modernos (Laravel 10+)
      */
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-
-        'password' => 'hashed',
-    ];
+    protected function casts(): array
+    {
+        return [
+            'email_verified_at' => 'datetime',
+            'password' => 'hashed', // Hash automático
+        ];
+    }
 
     /**
      * Relación: un usuario pertenece a un rol.
@@ -47,7 +49,7 @@ class User extends Authenticatable
     }
 
     /**
-     * Helper: verifica si el usuario tiene un rol dado su slug.
+     * Verificar rol por slug.
      */
     public function hasRole(string $slug): bool
     {
@@ -55,7 +57,7 @@ class User extends Authenticatable
     }
 
     /**
-     * Helper: verifica si el usuario tiene un permiso dado su slug.
+     * Verificar permiso del usuario.
      */
     public function hasPermission(string $permissionSlug): bool
     {

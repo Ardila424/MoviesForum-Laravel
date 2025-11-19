@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Section;
 
 class Role extends Model
 {
@@ -23,4 +24,11 @@ class Role extends Model
         return $this->belongsToMany(Permission::class, 'role_permissions')
                     ->withTimestamps();
     }
+    public function sections()
+    {
+    return $this->belongsToMany(Section::class, 'role_sections')
+                ->withPivot(['can_view', 'can_manage'])
+                ->withTimestamps();
+    }
+
 }

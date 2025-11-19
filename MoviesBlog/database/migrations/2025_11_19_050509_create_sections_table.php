@@ -6,23 +6,18 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('sections', function (Blueprint $table) {
             $table->id();
-            $table->string('name');                   // Ej: Reseñas, Noticias, Estrenos
-            $table->string('slug')->unique();         // reseñas, noticias, estrenos
-            $table->text('description')->nullable();  // descripción opcional
+            $table->string('name');               // Ej: Reseñas
+            $table->string('slug')->unique();     // resenas
+            $table->text('description')->nullable();
+            $table->boolean('is_active')->default(true);
             $table->timestamps();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('sections');

@@ -2,30 +2,22 @@
 
 namespace Database\Seeders;
 
-use App\Models\Section;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Str;
+use App\Models\Section;
 
 class SectionSeeder extends Seeder
 {
     public function run(): void
     {
-        $names = [
-            'Reseñas',
-            'Noticias',
-            'Estrenos',
-            'Críticas',
-            'Artículos Especiales',
+        $sections = [
+            ['name' => 'Reseñas', 'slug' => 'resenas', 'description' => 'Reseñas de películas'],
+            ['name' => 'Noticias', 'slug' => 'noticias', 'description' => 'Noticias del mundo del cine'],
+            ['name' => 'Estrenos', 'slug' => 'estrenos', 'description' => 'Próximos estrenos en cine y streaming'],
+            ['name' => 'Recomendaciones', 'slug' => 'recomendaciones', 'description' => 'Listas y recomendaciones'],
         ];
 
-        foreach ($names as $name) {
-            Section::firstOrCreate(
-                ['slug' => Str::slug($name)],
-                [
-                    'name'        => $name,
-                    'description' => "Sección de {$name} sobre películas y series.",
-                ]
-            );
+        foreach ($sections as $sec) {
+            Section::create($sec);
         }
     }
 }
