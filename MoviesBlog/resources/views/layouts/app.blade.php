@@ -1,36 +1,47 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="csrf-token" content="{{ csrf_token() }}">
+<html lang="es">
 
-        <title>{{ config('app.name', 'Laravel') }}</title>
+<head>
+    <meta charset="UTF-8">
+    <title>@yield('title', 'Movies Blog')</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    @vite('resources/css/app.css')
+</head>
 
-        <!-- Fonts -->
-        <link rel="preconnect" href="https://fonts.bunny.net">
-        <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
+<body class="bg-gray-100 text-gray-900">
 
-        <!-- Scripts -->
-        @vite(['resources/css/app.css', 'resources/js/app.js'])
-    </head>
-    <body class="font-sans antialiased">
-        <div class="min-h-screen bg-gray-100">
-            @include('layouts.navigation')
-
-            <!-- Page Heading -->
-            @isset($header)
-                <header class="bg-white shadow">
-                    <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-                        {{ $header }}
-                    </div>
-                </header>
-            @endisset
-
-            <!-- Page Content -->
-            <main>
-                {{ $slot }}
-            </main>
+    <nav class="bg-gray-900 text-white px-6 py-4 flex justify-between">
+        <div class="font-bold">
+            <a href="{{ route('home') }}">🎬 MoviesBlog</a>
         </div>
-    </body>
-</html>
+        <div class="space-x-4 text-sm">
+            @auth
+                <a href="{{ route('dashboard') }}">Dashboard</a>
+                @if (auth()->user()->hasRole('admin'))
+                    <a href="{{ route('admin.index') }}">Admin</a>
+                @endif
+                <form action="{{ route('logout') }}" method="POST" class="inline">
+                    @csrf
+                    <button class="text-red-300 hover:text-red-100">Salir</button>
+                </form>
+            @else
+                <a href="{{ route('login') }}">Ingresar</a>
+                <a href="{{ route('register') }}">Registrarse</a>
+            @endauth
+        </div>
+    </nav>
+
+    <main class="max-w-6xl mx-auto py-8 px-4">
+        @if (session('success'))
+            <div class="mb-4 rounded bg-green-100 text-green-800 px-4 py-2 text-sm">
+                {{ session('success') }}
+            </div>
+        @endif
+
+        @yield('content')
+
+        @if (isset($slot))
+            {{ $slot }}
+        @endif
+    </main>
+</body>

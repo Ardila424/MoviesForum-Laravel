@@ -15,7 +15,7 @@ use Illuminate\View\View;
 class RegisteredUserController extends Controller
 {
     /**
-     * Display the registration view.
+     * Muestra el formulario de registro.
      */
     public function create(): View
     {
@@ -23,28 +23,39 @@ class RegisteredUserController extends Controller
     }
 
     /**
-     * Handle an incoming registration request.
-     *
-     * @throws \Illuminate\Validation\ValidationException
+     * Maneja el registro de un nuevo usuario.
      */
     public function store(Request $request): RedirectResponse
     {
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
+            'email' => [
+                'required',
+                'string',
+                'lowercase',
+                'email',
+                'max:255',
+                'unique:' . User::class,
+            ],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
         $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
+            'name'     => $request->name,
+            'email'    => $request->email,
             'password' => Hash::make($request->password),
+            // No ponemos role_id aquí para que quede en NULL por defecto
+            // y solo el usuario creado por el seeder sea admin.
         ]);
 
         event(new Registered($user));
 
         Auth::login($user);
 
-        return redirect(route('dashboard', absolute: false));
+        // 👇 Aquí estaba antes RouteServiceProvider::HOME
+        // Redirigimos al dashboard usando el nombre de la ruta
+        return redirect()->route('dashboard');
+        // o si prefieres:
+        // return redirect()->intended(route('dashboard'));
     }
 }

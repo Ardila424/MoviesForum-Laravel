@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\Schema; // Importamos la clase Schema
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -19,6 +20,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        // Se limita la longitud de las cadenas para compatibilidad con MySQL antiguo (WAMP)
+        Schema::defaultStringLength(191);
     }
 }
