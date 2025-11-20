@@ -20,6 +20,40 @@ class UserController extends Controller
     }
 
     /**
+     * Muestra el formulario para crear un nuevo usuario.
+     */
+    public function create()
+    {
+        $roles = Role::all();
+        return view('admin.users.create', compact('roles'));
+    }
+
+    /**
+     * Guarda un nuevo usuario en la base de datos.
+     */
+    public function store(Request $request)
+    {
+        // Validar datos del formulario
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:8|confirmed',
+            'role_id' => 'required|exists:roles,id',
+        ]);
+
+        // Crear el usuario
+        User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => $request->password, // Se hashea automáticamente en el modelo
+            'role_id' => $request->role_id,
+        ]);
+
+        return redirect()->route('admin.users.index')
+            ->with('success', 'Usuario creado correctamente.');
+    }
+
+    /**
      * Muestra el formulario para editar el rol de un usuario.
      */
     public function edit(User $user)

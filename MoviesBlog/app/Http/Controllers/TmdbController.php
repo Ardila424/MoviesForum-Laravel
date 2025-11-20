@@ -16,13 +16,6 @@ class TmdbController extends Controller
      */
     public function search(Request $request)
     {
-        $user = auth()->user();
-
-        // Solo admin / editor (ahora mismo, según rutas, solo admin entra al /admin)
-        if (! $user || (! $user->hasRole('admin') && ! $user->hasRole('editor'))) {
-            abort(403);
-        }
-
         $query = trim((string) $request->query('q', ''));
 
         if (mb_strlen($query) < 2) {

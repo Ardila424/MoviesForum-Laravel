@@ -180,7 +180,7 @@
                                 const btn = document.createElement('button');
                                 btn.type = 'button';
                                 btn.className =
-                                    'w-full text-left px-2 py-1 text-sm hover:bg-gray-100 dark:hover:bg-gray-700 rounded';
+                                    'w-full text-left px-2 py-1 text-sm text-gray-900 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-700 rounded';
 
                                 const year = movie.release_date ? movie.release_date
                                     .substring(0, 4) : 'sin año';

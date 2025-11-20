@@ -51,6 +51,10 @@
                                 <a href="{{ route('admin.roles.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-purple-50">Roles y Permisos</a>
                             </div>
                         </div>
+                    @elseif (auth()->user()->hasRole('editor'))
+                        <a href="{{ route('admin.blogs.index') }}" class="text-slate-700 hover:text-purple-600">
+                            Mis Blogs
+                        </a>
                     @endif
 
                     <form action="{{ route('logout') }}" method="POST" class="inline">

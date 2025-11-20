@@ -23,14 +23,9 @@ class BlogController extends Controller
     public function index()
     {
         $user = auth()->user();
-
-        if (! $user || (! $user->hasRole('admin') && ! $user->hasRole('editor'))) {
-            abort(403, 'No tienes permisos para ver esta página.');
-        }
-
         $query = Blog::with('author', 'section')->orderByDesc('created_at');
 
-        // Si luego el editor puede entrar, aquí se filtra por usuario
+        // Los editores solo ven sus propios blogs
         if ($user->hasRole('editor') && ! $user->hasRole('admin')) {
             $query->where('user_id', $user->id);
         }
@@ -45,12 +40,6 @@ class BlogController extends Controller
      */
     public function create()
     {
-        $user = auth()->user();
-
-        if (! $user || (! $user->hasRole('admin') && ! $user->hasRole('editor'))) {
-            abort(403);
-        }
-
         $sections = Section::orderBy('name')->get();
 
         return view('admin.blogs.create', compact('sections'));
@@ -62,11 +51,6 @@ class BlogController extends Controller
     public function store(Request $request)
     {
         $user = auth()->user();
-
-        if (! $user || (! $user->hasRole('admin') && ! $user->hasRole('editor'))) {
-            abort(403);
-        }
-
         $validated = $request->validate([
             'title'        => ['required', 'string', 'max:255'],
             'section_id'   => ['required', 'exists:sections,id'],
@@ -119,12 +103,9 @@ class BlogController extends Controller
     {
         $user = auth()->user();
 
-        if (! $user || (! $user->hasRole('admin') && ! $user->hasRole('editor'))) {
-            abort(403);
-        }
-
+        // Los editores solo pueden editar sus propios blogs
         if ($user->hasRole('editor') && ! $user->hasRole('admin') && $blog->user_id !== $user->id) {
-            abort(403);
+            abort(403, 'No puedes editar blogs de otros usuarios.');
         }
 
         $sections = Section::orderBy('name')->get();
@@ -139,12 +120,9 @@ class BlogController extends Controller
     {
         $user = auth()->user();
 
-        if (! $user || (! $user->hasRole('admin') && ! $user->hasRole('editor'))) {
-            abort(403);
-        }
-
+        // Los editores solo pueden actualizar sus propios blogs
         if ($user->hasRole('editor') && ! $user->hasRole('admin') && $blog->user_id !== $user->id) {
-            abort(403);
+            abort(403, 'No puedes editar blogs de otros usuarios.');
         }
 
         $validated = $request->validate([
@@ -203,12 +181,9 @@ class BlogController extends Controller
     {
         $user = auth()->user();
 
-        if (! $user || (! $user->hasRole('admin') && ! $user->hasRole('editor'))) {
-            abort(403);
-        }
-
+        // Los editores solo pueden eliminar sus propios blogs
         if ($user->hasRole('editor') && ! $user->hasRole('admin') && $blog->user_id !== $user->id) {
-            abort(403);
+            abort(403, 'No puedes eliminar blogs de otros usuarios.');
         }
 
         $blog->delete();
