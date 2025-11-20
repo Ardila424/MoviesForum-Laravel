@@ -35,4 +35,12 @@ return [
         ],
     ],
 
+    // Configuración para TMDB
+    'tmdb' => [
+        'api_key'   => env('TMDB_API_KEY'),
+        'verify_ssl'  => env('TMDB_VERIFY_SSL', true),
+        'base_url'  => env('TMDB_BASE_URL', 'https://api.themoviedb.org/3'),
+        'image_url' => env('TMDB_IMAGE_BASE_URL', 'https://image.tmdb.org/t/p'),
+    ],
+
 ];
