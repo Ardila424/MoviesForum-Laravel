@@ -3,6 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', 'Movies Blog')</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     @vite('resources/css/app.css')
@@ -56,6 +57,14 @@
                             Mis Blogs
                         </a>
                     @endif
+
+                    {{-- Enlaces de películas para todos los usuarios autenticados --}}
+                    <a href="{{ route('movies.search') }}" class="text-slate-700 hover:text-purple-600">
+                        🎬 Buscar Películas
+                    </a>
+                    <a href="{{ route('movies.favorites') }}" class="text-slate-700 hover:text-purple-600">
+                        ❤️ Mis Favoritas
+                    </a>
 
                     <form action="{{ route('logout') }}" method="POST" class="inline">
                         @csrf

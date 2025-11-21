@@ -29,12 +29,13 @@ class TmdbController extends Controller
         }
 
         $mapped = collect($apiResult['results'] ?? [])
-            ->take(10)
+            ->take(4)  // Limitar a 4 películas
             ->map(function ($movie) {
                 return [
                     'id'            => $movie['id'] ?? null,
                     'title'         => $movie['title'] ?? ($movie['original_title'] ?? 'Sin título'),
                     'original_title'=> $movie['original_title'] ?? null,
+                    'poster_path'   => $movie['poster_path'] ?? null,  // ¡Agregado!
                     'release_date'  => $movie['release_date'] ?? null,
                     'vote_average'  => $movie['vote_average'] ?? null,
                 ];
