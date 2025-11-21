@@ -201,7 +201,7 @@ El sistema permite comentarios tanto de **usuarios autenticados** como de **visi
 2. Desplázate a la sección de comentarios
 3. Completa el formulario:
    - **Nombre**: Tu nombre completo
-   - **Email**: Tu correo electrónico (no se muestra públicamente)
+   - **Email**: Tu correo electrónico (usado solo para identificación, no se muestra públicamente)
    - **Comentario**: Tu mensaje (mínimo 3 caracteres, máximo 1000)
 4. Haz clic en **"Publicar Comentario"**
 5. Tu comentario se publicará con el nombre que proporcionaste
