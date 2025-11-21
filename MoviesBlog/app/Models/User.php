@@ -2,31 +2,27 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Models\Role;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
-    /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
 
     /**
-     * The attributes that are mass assignable.
-     *
-     * @var list<string>
+     * Atributos que se pueden asignar masivamente.
      */
     protected $fillable = [
         'name',
         'email',
         'password',
+        'role_id',
     ];
 
     /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var list<string>
+     * Atributos ocultos.
      */
     protected $hidden = [
         'password',
@@ -34,15 +30,49 @@ class User extends Authenticatable
     ];
 
     /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
+     * Casts modernos (Laravel 10+)
      */
     protected function casts(): array
     {
         return [
             'email_verified_at' => 'datetime',
-            'password' => 'hashed',
+            'password' => 'hashed', // Hash automático
         ];
+    }
+
+    /**
+     * Relación: un usuario pertenece a un rol.
+     */
+    public function role()
+    {
+        return $this->belongsTo(Role::class);
+    }
+
+    /**
+     * Verificar rol por slug.
+     */
+    public function hasRole(string $slug): bool
+    {
+        return $this->role && $this->role->slug === $slug;
+    }
+
+    /**
+     * Verificar permiso del usuario.
+     */
+    public function hasPermission(string $permissionSlug): bool
+    {
+        if (! $this->role) {
+            return false;
+        }
+
+        return $this->role->permissions->contains('slug', $permissionSlug);
+    }
+
+    /**
+     * Relación: Un usuario tiene muchos favoritos
+     */
+    public function favorites()
+    {
+        return $this->hasMany(Favorite::class);
     }
 }
