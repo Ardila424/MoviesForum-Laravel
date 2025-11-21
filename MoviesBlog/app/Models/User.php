@@ -67,4 +67,12 @@ class User extends Authenticatable
 
         return $this->role->permissions->contains('slug', $permissionSlug);
     }
+
+    /**
+     * Relación: Un usuario tiene muchos favoritos
+     */
+    public function favorites()
+    {
+        return $this->hasMany(Favorite::class);
+    }
 }

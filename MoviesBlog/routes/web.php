@@ -7,9 +7,6 @@ use App\Http\Controllers\BlogController;
 use App\Http\Controllers\PublicBlogController;
 use App\Http\Controllers\TmdbController;
 use Illuminate\Support\Facades\Route;
-use App\Models\Role;
-use App\Models\Permission;
-use App\Models\User;
 
 // Página principal pública: últimos blogs publicados
 Route::get('/', [PublicBlogController::class, 'index'])->name('home');
@@ -22,7 +19,9 @@ Route::get('/seccion/{slug}', [PublicBlogController::class, 'bySection'])
 Route::get('/blog/{slug}', [PublicBlogController::class, 'show'])
     ->name('blog.show');
 
-
+// Comentarios en blogs (público, permite visitantes)
+Route::post('/blogs/{blog}/comments', [\App\Http\Controllers\CommentController::class, 'store'])
+    ->name('comments.store');
 
 // Dashboard para usuarios autenticados
 Route::get('/dashboard', function () {
@@ -35,6 +34,17 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+
+// Rutas de películas y favoritos (requieren autenticación)
+Route::middleware('auth')->group(function () {
+    Route::get('/movies/search', [\App\Http\Controllers\MovieSearchController::class, 'index'])->name('movies.search');
+    Route::get('/movies/favorites', [\App\Http\Controllers\FavoriteController::class, 'index'])->name('movies.favorites');
+    Route::post('/movies/favorites', [\App\Http\Controllers\FavoriteController::class, 'store'])->name('favorites.store');
+    Route::delete('/movies/favorites/{tmdbId}', [\App\Http\Controllers\FavoriteController::class, 'destroy'])->name('favorites.destroy');
+});
+
+// API endpoint para búsqueda TMDB (público, ya existe en TmdbController)
+Route::get('/api/tmdb/search', [TmdbController::class, 'search'])->name('tmdb.search');
 
 // ===================== ZONA ADMIN (con permisos granulares) =====================
 // Las rutas ahora verifican permisos específicos usando AuthorizedMiddleware

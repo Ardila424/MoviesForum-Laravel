@@ -45,4 +45,12 @@ class Blog extends Model
     {
         return $this->belongsTo(Section::class);
     }
+
+    /**
+     * Relación: Un blog tiene muchos comentarios
+     */
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
 }
