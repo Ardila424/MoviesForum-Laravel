@@ -193,7 +193,7 @@ El sistema permite comentarios tanto de **usuarios autenticados** como de **visi
 2. Navega a cualquier blog público
 3. Desplázate a la sección de comentarios
 4. Escribe tu comentario (mínimo 3 caracteres, máximo 1000)
-5. Click en **"Publicar Comentario"**
+5. Haz clic en **"Publicar Comentario"**
 6. Tu nombre de usuario aparecerá automáticamente en el comentario
 
 #### Comentar como Visitante (No Autenticado)
@@ -203,7 +203,7 @@ El sistema permite comentarios tanto de **usuarios autenticados** como de **visi
    - **Nombre**: Tu nombre completo
    - **Email**: Tu correo electrónico (no se muestra públicamente)
    - **Comentario**: Tu mensaje (mínimo 3 caracteres, máximo 1000)
-4. Click en **"Publicar Comentario"**
+4. Haz clic en **"Publicar Comentario"**
 5. Tu comentario se publicará con el nombre que proporcionaste
 
 **Características:**
@@ -231,7 +231,7 @@ Sistema completo de búsqueda y gestión de películas favoritas con datos actua
 #### Gestionar Favoritos
 1. **Acceso**: Solo usuarios autenticados
 2. Navega a **"Mis Favoritos"** en la barra de navegación
-3. Desde la búsqueda, click en **"★ Agregar a Favoritos"** en cualquier película
+3. Desde la búsqueda, haz clic en **"★ Agregar a Favoritos"** en cualquier película
 4. La película se guarda con toda su información de TMDB
 5. En tu lista de favoritos puedes:
    - Ver todas tus películas guardadas
@@ -305,13 +305,13 @@ Verifica que tu `TMDB_API_KEY` en `.env` sea válida
 
 ## 📝 Tareas Pendientes / Roadmap
 
-- [x] Sistema de comentarios en blogs ✅ **Completado**
-- [x] Búsqueda y filtros avanzados ✅ **Completado**
-- [x] Listas de películas (Watchlist/Favoritos) ✅ **Completado**
-- [ ] Sistema de "Me gusta" en comentarios (en construcción)
-- [ ] Dashboard de estadísticas para editores (en construcción)
-- [ ] Notificaciones de nuevos comentarios (en construcción)
-- [ ] Moderación de comentarios (en construcción)
+- [x] Sistema de comentarios en blogs
+- [x] Búsqueda y filtros avanzados
+- [x] Listas de películas (Watchlist/Favoritos)
+- [ ] Sistema de "Me gusta" en comentarios
+- [ ] Dashboard de estadísticas para editores
+- [ ] Notificaciones de nuevos comentarios
+- [ ] Moderación de comentarios
 
 ## 👨‍💻 Autor
 
