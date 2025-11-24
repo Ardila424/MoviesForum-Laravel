@@ -15,6 +15,9 @@
 - ✅ **Integración TMDB** - Búsqueda automática de películas con datos actualizados desde la API de TMDB
 - ✅ **Gestión de Secciones** - Categorización del blog. Ejemplo: Noticias, Reseñas, Estrenos, Trailers
 - ✅ **Sistema de Calificaciones** - Rating de 1-10 para cada película
+- ✅ **Sistema de Comentarios** - Comentarios en blogs para usuarios autenticados y visitantes
+- ✅ **Búsqueda de Películas** - Búsqueda en tiempo real con la API de TMDB
+- ✅ **Sistema de Favoritos** - Guarda tus películas favoritas con información de TMDB
 
 ### 🔐 Sistema de Permisos
 - ✅ **Permisos Granulares** - Sistema `Módulo.Acción` (ej: `Blogs.createBlogs`)
@@ -181,6 +184,67 @@ Usa estas credenciales para acceder al sistema:
 4. Escribe tu reseña y calificación
 5. Publica inmediatamente o guarda como borrador
 
+### 💬 Sistema de Comentarios
+
+El sistema permite comentarios tanto de **usuarios autenticados** como de **visitantes**.
+
+#### Comentar como Usuario Autenticado
+1. Inicia sesión con cualquier cuenta (Admin, Editor o Visitante)
+2. Navega a cualquier blog público
+3. Desplázate a la sección de comentarios
+4. Escribe tu comentario (mínimo 3 caracteres, máximo 1000)
+5. Haz clic en **"Publicar Comentario"**
+6. Tu nombre de usuario aparecerá automáticamente en el comentario
+
+#### Comentar como Visitante (No Autenticado)
+1. Navega a cualquier blog público sin iniciar sesión
+2. Desplázate a la sección de comentarios
+3. Completa el formulario:
+   - **Nombre**: Tu nombre completo
+   - **Email**: Tu correo electrónico (usado solo para identificación, no se muestra públicamente)
+   - **Comentario**: Tu mensaje (mínimo 3 caracteres, máximo 1000)
+4. Haz clic en **"Publicar Comentario"**
+5. Tu comentario se publicará con el nombre que proporcionaste
+
+**Características:**
+- ✅ Sin necesidad de cuenta para comentar
+- ✅ Validación de contenido (anti-spam básico)
+- ✅ Comentarios ordenados por fecha (más recientes primero)
+- ✅ Identificación clara entre usuarios registrados y visitantes
+
+### 🎬 Búsqueda y Favoritos de Películas
+
+Sistema completo de búsqueda y gestión de películas favoritas con datos actualizados de TMDB.
+
+#### Buscar Películas
+1. **Acceso**: Solo usuarios autenticados
+2. Navega a **"Buscar Películas"** en la barra de navegación
+3. Escribe el título de la película en el buscador
+4. Los resultados se actualizan en **tiempo real** mientras escribes
+5. Cada resultado muestra:
+   - Póster de la película
+   - Título y fecha de estreno
+   - Calificación promedio de TMDB
+   - Sinopsis breve
+   - Botón para agregar a favoritos
+
+#### Gestionar Favoritos
+1. **Acceso**: Solo usuarios autenticados
+2. Navega a **"Mis Favoritos"** en la barra de navegación
+3. Desde la búsqueda, haz clic en **"★ Agregar a Favoritos"** en cualquier película
+4. La película se guarda con toda su información de TMDB
+5. En tu lista de favoritos puedes:
+   - Ver todas tus películas guardadas
+   - Ver detalles completos (póster, sinopsis, calificación)
+   - Eliminar películas con el botón **"Eliminar"**
+
+**Características:**
+- ✅ Búsqueda en tiempo real (sin recargar página)
+- ✅ Datos actualizados desde TMDB
+- ✅ Prevención de duplicados (no puedes agregar la misma película dos veces)
+- ✅ Interfaz visual con pósters y calificaciones
+- ✅ Favoritos privados por usuario
+
 ## 🔑 Permisos del Sistema
 
 ### Estructura de Permisos
@@ -203,6 +267,17 @@ Los permisos siguen el formato `Módulo.Acción`:
 | Eliminar Blogs | ✅ | ❌ | ❌ |
 | Gestionar Usuarios | ✅ | ❌ | ❌ |
 | Gestionar Roles | ✅ | ❌ | ❌ |
+
+### Permisos de Funcionalidades Públicas y Nuevas
+
+| Funcionalidad | Requiere Autenticación | Permisos Especiales | Notas |
+|---------------|------------------------|---------------------|-------|
+| **Ver Blogs Públicos** | ❌ No | Ninguno | Cualquiera puede ver blogs publicados |
+| **Comentar en Blogs** | ❌ No | Ninguno | Usuarios autenticados y visitantes pueden comentar. Visitantes deben proporcionar nombre y email |
+| **Buscar Películas** | ✅ Sí | Ninguno | Disponible para todos los usuarios autenticados (Admin, Editor, Visitante) |
+| **Agregar a Favoritos** | ✅ Sí | Ninguno | Disponible para todos los usuarios autenticados. Cada usuario gestiona sus propios favoritos |
+| **Ver Mis Favoritos** | ✅ Sí | Ninguno | Solo puedes ver tus propios favoritos, no los de otros usuarios |
+| **Eliminar de Favoritos** | ✅ Sí | Ninguno | Solo puedes eliminar tus propias películas favoritas |
 
 ---
 
@@ -230,11 +305,13 @@ Verifica que tu `TMDB_API_KEY` en `.env` sea válida
 
 ## 📝 Tareas Pendientes / Roadmap
 
-- [ ] Sistema de comentarios en blogs (en construcción)
-- [ ] Búsqueda y filtros avanzados (en construcción)
-- [ ] Sistema de "Me gusta" (en construcción)
-- [ ] Dashboard de estadísticas para editores (en construcción)
-- [ ] Listas de películas (Watchlist/Favoritos) (en construcción)
+- [x] Sistema de comentarios en blogs
+- [x] Búsqueda y filtros avanzados
+- [x] Listas de películas (Watchlist/Favoritos)
+- [ ] Sistema de "Me gusta" en comentarios
+- [ ] Dashboard de estadísticas para editores
+- [ ] Notificaciones de nuevos comentarios
+- [ ] Moderación de comentarios
 
 ## 👨‍💻 Autor
 
